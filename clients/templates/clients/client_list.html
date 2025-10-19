@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>إدارة العملاء</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light p-4">
+<div class="container">
+    <div class="card mb-4">
+        <div class="card-header">➕ إضافة عميل جديد</div>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-3">{{ form.name }}</div>
+                    <div class="col-md-2">{{ form.cash }}</div>
+                    <div class="col-md-2">{{ form.hawa }}</div>
+                    <div class="col-md-2">
+                    <input type="number" id="total" class="form-control" placeholder="الإجمالي" readonly>
+                    </div>
+                    <div class="col-md-2">{{ form.note }}</div>
+                    <div class="col-md-1 d-grid">
+                    <button type="submit" class="btn btn-primary">إضافة</button>
+                    </div>
+                </div>
+            </form>
+
+    </div>
+</div>
+    <h1 class="mb-4">📋 قائمة العملاء</h1>
+
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+            <th>الاسم</th>
+            <th>كاش</th>
+            <th>هوا</th>
+            <th>ملاحظات</th>
+            <th>تاريخ</th>
+            <th>إجراءات</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in clients %}
+            <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.cash }}</td>
+            <td>{{ c.hawa }}</td>
+            <td>{{ c.note }}</td>
+            <td>{{ c.created_at|date:"Y-m-d H:i" }}</td>
+            <td>
+                <a href="{% url 'edit_client' c.id %}" class="btn btn-sm btn-warning">تعديل</a>
+                <a href="{% url 'delete_client' c.id %}" class="btn btn-sm btn-danger">حذف</a>
+            </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'export_clients_excel' %}" class="btn btn-success">📤 تصدير إلى Excel</a>
+    </div>
+
+
+    <div class="alert alert-info">
+        <strong>الإجمالي الكاش:</strong> {{ total_cash }} |
+        <strong>الإجمالي الهوا:</strong> {{ total_hawa }} |
+        <strong>الإجمالي الكلي:</strong> {{ total }}
+    </div>
+</div>
+
+<script>
+  const cashInput = document.getElementById("id_cash");
+  const hawaInput = document.getElementById("id_hawa");
+  const totalInput = document.getElementById("total");
+
+  function updateTotal() {
+    const cash = parseFloat(cashInput.value) || 0;
+    const hawa = parseFloat(hawaInput.value) || 0;
+    totalInput.value = (cash + hawa).toFixed(2);
+  }
+
+  cashInput.addEventListener("input", updateTotal);
+  hawaInput.addEventListener("input", updateTotal);
+</script>
+
+</body>
+</html>
