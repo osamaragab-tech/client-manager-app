@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@-e$(^mvs(7g-p5!7+fb36gppos@hd9z2v=ia%m&=g%9b8yb4w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['osamaomar.pythonanywhere.com', 'osamaomar.pythonanywhere.com/client-manager-app', 'localhost', '127.0.0.1', '192.168.1.5']
 
 
 # Application definition
@@ -114,10 +114,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-
-STATIC_URL = 'static/'
+import os
+STATIC_URL = 'static/client-manager-app/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+MEDIA_URL = '/media/client-manager-app/'     # عدّل حسب المشروع
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
